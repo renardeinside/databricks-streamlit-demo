@@ -12,7 +12,7 @@ RUN mkdir /opt/drivers
 WORKDIR /opt/drivers
 
 
-RUN apt-get update -y && apt-get install -y unzip unixodbc-dev unixodbc-bin unixodbc
+RUN apt-get update -y && apt-get install -y unzip unixodbc-dev unixodbc-bin unixodbc make
 
 RUN wget \
     ${BUCKET_URI}/${DRIVER_MAJOR_VERSION}/${ZIP_FILE_NAME}
