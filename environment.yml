@@ -1,0 +1,10 @@
+name: databricks-streamlit-demo
+channels:
+  - conda-forge
+dependencies:
+  - pip
+  - pyodbc
+  - pandas
+  - pip:
+    - streamlit
+    - black

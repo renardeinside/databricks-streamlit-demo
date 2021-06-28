@@ -1,4 +1,4 @@
-FROM continuumio/miniconda3
+FROM continuumio/miniconda3:4.9.2
 
 ARG DRIVER_MAJOR_VERSION="2.6.16"
 ARG DRIVER_MINOR_VERSION=1019
@@ -23,10 +23,16 @@ RUN apt-get install -y ./${FOLDER_NAME}/*
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
-ADD requirements.txt requirements.txt
 
-RUN conda install --file requirements.txt
+
+ADD environment.yml environment.yml
+
+RUN --mount=type=cache,target=/opt/conda/pkgs conda env create -f environment.yml
+ENV PATH /opt/conda/envs/databricks-streamlit-demo/bin:$PATH
+RUN /bin/bash -c "source activate databricks-streamlit-demo"
 
 ADD app.py app.py
 
-ENTRYPOINT [ "streamlit", "run", "app.py" ]
+ENV STREAMLIT_SERVER_PORT=8052
+
+ENTRYPOINT ["streamlit", "run", "app.py"]

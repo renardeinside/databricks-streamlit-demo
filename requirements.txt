@@ -1,4 +1,0 @@
-pyodbc>=4.0.30
-pandas>=1.0.1
-streamlit>=0.83.0
-black>=20.8b1
