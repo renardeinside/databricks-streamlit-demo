@@ -12,7 +12,7 @@ RUN mkdir /opt/drivers
 WORKDIR /opt/drivers
 
 
-RUN apt-get update -y && apt-get install -y unzip unixodbc-dev unixodbc-bin unixodbc make
+RUN apt-get update -y && apt-get install -y unzip unixodbc-dev unixodbc-bin unixodbc make procps
 
 RUN wget \
     ${BUCKET_URI}/${DRIVER_MAJOR_VERSION}/${ZIP_FILE_NAME}
@@ -31,8 +31,11 @@ RUN --mount=type=cache,target=/opt/conda/pkgs conda env create -f environment.ym
 ENV PATH /opt/conda/envs/databricks-streamlit-demo/bin:$PATH
 RUN /bin/bash -c "source activate databricks-streamlit-demo"
 
-ADD app.py app.py
+ADD databricks_streamlit_demo databricks_streamlit_demo
+ADD setup.py setup.py
+
+RUN pip install -e .
 
 ENV STREAMLIT_SERVER_PORT=8052
 
-ENTRYPOINT ["streamlit", "run", "app.py"]
+ENTRYPOINT ["streamlit", "run", "databricks_streamlit_demo/app.py"]

@@ -38,6 +38,15 @@ class DataProvider:
         return EndpointInfo(_host, _token, _http_path, _driver_path)
 
     @staticmethod
+    def get_mapbox_token() -> str:
+        token = os.environ.get("MAPBOX_TOKEN")
+        if not token:
+            raise Exception(
+                "Mapbox token is not provided, please create one for free at https://studio.mapbox.com/"
+            )
+        return token
+
+    @staticmethod
     def get_connection_string(endpoint_info: EndpointInfo) -> str:
         connection_string = "".join(
             [
@@ -64,7 +73,7 @@ class DataProvider:
 
 
 class TaxiDataProvider(DataProvider):
-    def get_trips_by_hour(self, dt: dt.date) -> pd.DataFrame:
+    def get_trips_by_minute(self, dt: dt.date) -> pd.DataFrame:
         query = f"""
         select 
             date_trunc('minute', pickup_datetime) as dt, 
@@ -74,5 +83,31 @@ class TaxiDataProvider(DataProvider):
         group by 1
         order by 1
         """
-        data = self._get_data(query).set_index("dt")
+        data = self._get_data(query)
+        return data
+
+    def get_raw_trips(self, date_filter_column: str, dt: dt.date) -> pd.DataFrame:
+        query = f"""
+        select 
+            {date_filter_column},
+            date_trunc('hour', pickup_datetime) as pickup_hour, 
+            date_trunc('hour', dropoff_datetime) as dropoff_hour, 
+            pickup_longitude,
+            pickup_latitude,
+            dropoff_longitude,
+            dropoff_latitude,
+            trip_distance
+        from streamlit_demo_db.nyctaxi_yellow
+        where 
+            to_date({date_filter_column}) = "{dt}"
+            and pickup_longitude is not null
+            and pickup_latitude is not null
+            and dropoff_longitude is not null
+            and dropoff_latitude is not null
+        """
+        data = self._get_data(query)
+
+        data["pickup_hour"] = data["pickup_hour"].dt.strftime("%H")
+        data["dropoff_hour"] = data["dropoff_hour"].dt.strftime("%H")
+        data.sort_values(by=date_filter_column, inplace=True)
         return data
