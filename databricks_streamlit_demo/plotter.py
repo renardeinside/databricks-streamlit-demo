@@ -4,7 +4,7 @@ import streamlit as st
 import datetime as dt
 import plotly.express as px
 import plotly.graph_objects as go
-from databricks_streamlit_demo.utils import write_aligned_header
+from databricks_streamlit_demo.utils import write_aligned_header, custom_spinner
 
 
 class Plotter:
@@ -13,7 +13,7 @@ class Plotter:
         px.set_mapbox_access_token(self.provider.get_mapbox_token())
 
     def add_counter_plot(self, chosen_date: dt.date) -> None:
-        with st.spinner("Loading total count ..."):
+        with custom_spinner("Loading total count ..."):
             cnt = self.provider._get_data(
                 f"""
             select count(1) as cnt 
@@ -34,7 +34,7 @@ class Plotter:
 
     def add_minute_plot(self, chosen_date: dt.date) -> None:
         write_aligned_header("Number of trips per minute", alignment="right")
-        with st.spinner("Loading minute plot ..."):
+        with custom_spinner("Loading minute plot ..."):
             data = self.provider.get_trips_by_minute(chosen_date)
             fig = px.area(
                 data,
@@ -73,7 +73,7 @@ class Plotter:
 
     def add_pickup_density_map(self, chosen_date: dt.date) -> None:
         write_aligned_header("Pickups density map")
-        with st.spinner("Loading pickup density map ..."):
+        with custom_spinner("Loading pickup density map ..."):
             fig = self._get_density_map(
                 chosen_date,
                 "pickup_datetime",
@@ -86,7 +86,7 @@ class Plotter:
 
     def add_dropoff_density_map(self, chosen_date: dt.date) -> None:
         write_aligned_header("Dropoffs density map", alignment="right")
-        with st.spinner("Loading dropoff density map ..."):
+        with custom_spinner("Loading dropoff density map ..."):
             fig = self._get_density_map(
                 chosen_date,
                 "dropoff_datetime",

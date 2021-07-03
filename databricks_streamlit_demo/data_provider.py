@@ -5,7 +5,8 @@ import pandas as pd
 import os
 import pyodbc
 import datetime as dt
-
+import streamlit as st
+import functools 
 
 @dataclass
 class EndpointInfo:
@@ -61,14 +62,18 @@ class DataProvider:
                 ";SparkServerType=3",
                 ";UID=token",
                 f";PWD={endpoint_info.token}",
+                ";RowsFetchedPerBlock=3000000"
             ]
         )
         return connection_string
 
     def _get_data(self, query: str) -> pd.DataFrame:
         self.logger.debug(f"Running SQL query: {query}")
+        start_time = dt.datetime.now()
         data = pd.read_sql(query, self.connection)
-        self.logger.debug("Query executed, returning the result")
+        end_time = dt.datetime.now()
+        time_delta = end_time - start_time
+        self.logger.debug(f"Query executed, returning the result. Total query time: {time_delta}")
         return data
 
 
@@ -85,7 +90,7 @@ class TaxiDataProvider(DataProvider):
         """
         data = self._get_data(query)
         return data
-
+    
     def get_raw_trips(self, date_filter_column: str, dt: dt.date) -> pd.DataFrame:
         query = f"""
         select 

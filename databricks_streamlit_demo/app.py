@@ -3,13 +3,14 @@ import logging
 import datetime as dt
 from databricks_streamlit_demo.data_provider import TaxiDataProvider
 from databricks_streamlit_demo.plotter import Plotter
-from databricks_streamlit_demo.utils import write_aligned_header
+from databricks_streamlit_demo.utils import write_aligned_header, custom_spinner
+import time 
 
 logger = logging.getLogger("databricks-streamlit-demo")
 data_provider = TaxiDataProvider(logger)
 plotter = Plotter(data_provider)
 
-st.set_page_config(layout="wide")
+st.set_page_config(layout="wide", page_title="Databricks Streamlit Demo", page_icon=":fire:")
 
 st.write(
     """
