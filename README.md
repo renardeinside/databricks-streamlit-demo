@@ -8,7 +8,7 @@
 
 ## Quick demo
 
-![demo](./videos/demo.gif)
+![demo](./raw/demo.gif)
 
 ## How to 
 
