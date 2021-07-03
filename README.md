@@ -8,7 +8,7 @@
 
 ## Quick demo
 
-![demo](./videos/demo.webm)
+![demo](./videos/demo.gif)
 
 ## How to 
 
