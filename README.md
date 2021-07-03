@@ -1,5 +1,13 @@
 # Demo of Streamlit application with Databricks SQL Endpoint
 
+Table of Contents
+=================
+
+   * [Demo of Streamlit application with Databricks SQL Endpoint](#demo-of-streamlit-application-with-databricks-sql-endpoint)
+      * [Prerequisites](#prerequisites)
+      * [Quick demo](#quick-demo)
+      * [How to](#how-to)
+      * [References](#references)
 
 ## Prerequisites
 
@@ -27,9 +35,10 @@ location "dbfs:/databricks-datasets/nyctaxi/tables/nyctaxi_yellow";
 4. On local machine, launch `make run` to start the server
 5. Open http://localhost:8052 and enjoy the new application :) 
 
-## Kudos & references
+## References
 
 - [Databricks SQL](https://databricks.com/product/databricks-sql)
 - [Streamlit](https://streamlit.io/)
 - [Mapbox](https://www.mapbox.com/)
 - [NYC Taxi Dataset](https://www1.nyc.gov/site/tlc/about/tlc-trip-record-data.page)
+- [Markdown TOC](https://github.com/ekalinin/github-markdown-toc)
