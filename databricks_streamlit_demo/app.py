@@ -4,13 +4,15 @@ import datetime as dt
 from databricks_streamlit_demo.data_provider import TaxiDataProvider
 from databricks_streamlit_demo.plotter import Plotter
 from databricks_streamlit_demo.utils import write_aligned_header, empty_date_warning
-import time 
+import time
 
 logger = logging.getLogger("databricks-streamlit-demo")
 data_provider = TaxiDataProvider(logger)
 plotter = Plotter(data_provider)
 
-st.set_page_config(layout="wide", page_title="Databricks Streamlit Demo", page_icon=":fire:")
+st.set_page_config(
+    layout="wide", page_title="Databricks Streamlit Demo", page_icon=":fire:"
+)
 
 st.write(
     """
@@ -40,4 +42,4 @@ with pickups_map:
     plotter.add_density_map(chosen_date, name="pickup", zoom=11)
 
 with dropoffs_map:
-   plotter.add_density_map(chosen_date, name="dropoff", zoom=9, alignment="right")
+    plotter.add_density_map(chosen_date, name="dropoff", zoom=9, alignment="right")

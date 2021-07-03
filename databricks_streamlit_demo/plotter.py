@@ -5,12 +5,18 @@ import streamlit as st
 import datetime as dt
 import plotly.express as px
 import plotly.graph_objects as go
-from databricks_streamlit_demo.utils import write_aligned_header, custom_spinner, empty_date_warning
+from databricks_streamlit_demo.utils import (
+    write_aligned_header,
+    custom_spinner,
+    empty_date_warning,
+)
 from enum import Enum
+
 
 class MapTypes(Enum):
     Pickup: str = "pickup_"
     Dropoff: str = "dropoff_"
+
 
 class Plotter:
     def __init__(self, provider: TaxiDataProvider) -> None:
@@ -75,11 +81,17 @@ class Plotter:
                 animation_frame=frame_col,
                 center={"lat": 40.7359, "lon": -73.9911},  # NY Central Park Coordinates
                 height=600,
-                labels={"pickup_hour": "Pickup Hour", "dropoff_hour": "Dropoff Hour"}
+                labels={"pickup_hour": "Pickup Hour", "dropoff_hour": "Dropoff Hour"},
             )
             return fig
 
-    def add_density_map(self, chosen_date: dt.date, name: str, alignment: Optional[str]=None, zoom: Optional[int]=10) -> None:
+    def add_density_map(
+        self,
+        chosen_date: dt.date,
+        name: str,
+        alignment: Optional[str] = None,
+        zoom: Optional[int] = 10,
+    ) -> None:
         write_aligned_header(f"{name.capitalize()} density map", alignment=alignment)
 
         with custom_spinner(f"Loading {name} density map ..."):
