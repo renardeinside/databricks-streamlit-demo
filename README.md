@@ -12,7 +12,7 @@
 
 ## How to 
 
-1. Createnw or start an existing SQL endpoint of any size in your Databricks workspace
+1. Create or start an existing SQL endpoint of any size in your Databricks workspace
 2. Create new query and define the database and table:
 
 ```
@@ -27,6 +27,9 @@ location "dbfs:/databricks-datasets/nyctaxi/tables/nyctaxi_yellow";
 4. On local machine, launch `make run` to start the server
 5. Open http://localhost:8052 and enjoy the new application :) 
 
+## Kudos & references
 
-
-
+- [Databricks SQL](https://databricks.com/product/databricks-sql)
+- [Streamlit](https://streamlit.io/)
+- [Mapbox](https://www.mapbox.com/)
+- [NYC Taxi Dataset](https://www1.nyc.gov/site/tlc/about/tlc-trip-record-data.page)
