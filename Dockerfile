@@ -38,4 +38,4 @@ RUN pip install -e .
 
 ENV STREAMLIT_SERVER_PORT=8052
 
-ENTRYPOINT ["streamlit", "run", "databricks_streamlit_demo/app.py"]
+ENTRYPOINT ["streamlit", "run", "databricks_streamlit_demo/app.py","--logger.level=debug"]

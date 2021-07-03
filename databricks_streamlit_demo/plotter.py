@@ -1,11 +1,16 @@
+from typing import Optional
 from plotly.missing_ipywidgets import FigureWidget
 from databricks_streamlit_demo.data_provider import TaxiDataProvider
 import streamlit as st
 import datetime as dt
 import plotly.express as px
 import plotly.graph_objects as go
-from databricks_streamlit_demo.utils import write_aligned_header, custom_spinner
+from databricks_streamlit_demo.utils import write_aligned_header, custom_spinner, empty_date_warning
+from enum import Enum
 
+class MapTypes(Enum):
+    Pickup: str = "pickup_"
+    Dropoff: str = "dropoff_"
 
 class Plotter:
     def __init__(self, provider: TaxiDataProvider) -> None:
@@ -53,46 +58,40 @@ class Plotter:
         lon_col: str,
         frame_col: str,
         zoom: int = 10,
-    ) -> FigureWidget:
+    ) -> Optional[FigureWidget]:
         data = self.provider.get_raw_trips(date_filter_column, chosen_date)
-        fig = px.density_mapbox(
-            data_frame=data,
-            lat=lat_col,
-            lon=lon_col,
-            zoom=zoom,
-            z="trip_distance",
-            radius=10,
-            opacity=0.7,
-            mapbox_style="dark",
-            animation_frame=frame_col,
-            center={"lat": 40.7359, "lon": -73.9911},  # NY Central Park Coordinates
-            height=600,
-            labels={"pickup_hour": "Pickup Hour", "dropoff_hour": "Dropoff Hour"}
-        )
-        return fig
+        if data.empty:
+            return None
+        else:
+            fig = px.density_mapbox(
+                data_frame=data,
+                lat=lat_col,
+                lon=lon_col,
+                zoom=zoom,
+                z="trip_distance",
+                radius=10,
+                opacity=0.7,
+                mapbox_style="dark",
+                animation_frame=frame_col,
+                center={"lat": 40.7359, "lon": -73.9911},  # NY Central Park Coordinates
+                height=600,
+                labels={"pickup_hour": "Pickup Hour", "dropoff_hour": "Dropoff Hour"}
+            )
+            return fig
 
-    def add_pickup_density_map(self, chosen_date: dt.date) -> None:
-        write_aligned_header("Pickups density map")
-        with custom_spinner("Loading pickup density map ..."):
+    def add_density_map(self, chosen_date: dt.date, name: str, alignment: Optional[str]=None, zoom: Optional[int]=10) -> None:
+        write_aligned_header(f"{name.capitalize()} density map", alignment=alignment)
+
+        with custom_spinner(f"Loading {name} density map ..."):
             fig = self._get_density_map(
                 chosen_date,
-                "pickup_datetime",
-                "pickup_latitude",
-                "pickup_longitude",
-                "pickup_hour",
-                zoom=11,
+                f"{name}_datetime",
+                f"{name}_latitude",
+                f"{name}_longitude",
+                f"{name}_hour",
+                zoom=zoom,
             )
-            st.plotly_chart(fig, use_container_width=True)
-
-    def add_dropoff_density_map(self, chosen_date: dt.date) -> None:
-        write_aligned_header("Dropoffs density map", alignment="right")
-        with custom_spinner("Loading dropoff density map ..."):
-            fig = self._get_density_map(
-                chosen_date,
-                "dropoff_datetime",
-                "dropoff_latitude",
-                "dropoff_longitude",
-                "dropoff_hour",
-                zoom=9,
-            )
-            st.plotly_chart(fig, use_container_width=True)
+            if fig:
+                st.plotly_chart(fig, use_container_width=True)
+            else:
+                empty_date_warning()

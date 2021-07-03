@@ -2,7 +2,6 @@ import streamlit as st
 import contextlib as _contextlib
 import threading as _threading
 from streamlit.report_thread import add_report_ctx as _add_report_ctx
-import streamlit.components.v1 as components
 
 def write_aligned_header(text: str, alignment: str = "left", level: int = 3):
     st.markdown(
@@ -14,6 +13,12 @@ def write_aligned_header(text: str, alignment: str = "left", level: int = 3):
         unsafe_allow_html=True,
     )
 
+
+def empty_date_warning():
+    st.warning("""
+Pickup/dropoff locations are missing in the source data for any day after 2016.06.30, please choose the date before 1st of July 2016 for a density map visualization.
+"""
+)
 
 def _spinner_component(text: str) -> str:
     component = f"""

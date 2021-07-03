@@ -112,7 +112,7 @@ class TaxiDataProvider(DataProvider):
         """
         data = self._get_data(query)
 
-        data["pickup_hour"] = data["pickup_hour"].dt.strftime("%H")
-        data["dropoff_hour"] = data["dropoff_hour"].dt.strftime("%H")
+        data["pickup_hour"] = pd.to_datetime(data["pickup_hour"]).dt.strftime("%H")
+        data["dropoff_hour"] = pd.to_datetime(data["dropoff_hour"]).dt.strftime("%H")
         data.sort_values(by=date_filter_column, inplace=True)
         return data
