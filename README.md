@@ -6,6 +6,10 @@
 - Databricks SQL endpoint
 - Locally: Docker, Makefile
 
+## Quick demo
+
+![demo](./videos/demo.webm)
+
 ## How to 
 
 1. Createnw or start an existing SQL endpoint of any size in your Databricks workspace
