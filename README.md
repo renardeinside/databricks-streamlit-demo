@@ -12,7 +12,7 @@ Table of Contents
 ## Prerequisites
 
 - Databricks SQL endpoint
-- Free Mapbox token  - generate one [here](https://www.mapbox.com/))
+- Free Mapbox token  - generate one [here](https://www.mapbox.com/)
 - Locally: Docker, Makefile
 
 ## Quick demo
