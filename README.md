@@ -12,6 +12,7 @@ Table of Contents
 ## Prerequisites
 
 - Databricks SQL endpoint
+- Free Mapbox token  - generate one [here](https://www.mapbox.com/))
 - Locally: Docker, Makefile
 
 ## Quick demo
@@ -23,7 +24,7 @@ Table of Contents
 1. Create or start an existing SQL endpoint of any size in your Databricks workspace
 2. Create new query and define the database and table:
 
-```
+```sql
 CREATE DATABASE IF NOT EXISTS streamlit_demo_db;
 CREATE TABLE IF NOT EXISTS streamlit_demo_db.nyctaxi_yellow 
 USING DELTA

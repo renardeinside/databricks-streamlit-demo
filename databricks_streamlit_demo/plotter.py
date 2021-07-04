@@ -10,13 +10,6 @@ from databricks_streamlit_demo.utils import (
     custom_spinner,
     empty_date_warning,
 )
-from enum import Enum
-
-
-class MapTypes(Enum):
-    Pickup: str = "pickup_"
-    Dropoff: str = "dropoff_"
-
 
 class Plotter:
     def __init__(self, provider: TaxiDataProvider) -> None:

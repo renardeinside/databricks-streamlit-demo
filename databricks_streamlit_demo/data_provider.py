@@ -18,6 +18,9 @@ class EndpointInfo:
 
 
 class DataProvider:
+    """
+    Base class for providing access to the data 
+    """
     def __init__(self, logger: Logger) -> None:
         self.logger = logger
         endpoint_info = self._get_endpoint_info()
@@ -27,6 +30,9 @@ class DataProvider:
 
     @staticmethod
     def _get_endpoint_info() -> EndpointInfo:
+        """
+        This function collects all the nessesary bits of information to connect to the endpoint
+        """
         for var in ["DATABRICKS_HOST", "DATABRICKS_TOKEN", "DATABRICKS_HTTP_PATH"]:
             if var not in os.environ:
                 raise Exception(f"Environment variable {var} is not defined")
@@ -41,6 +47,9 @@ class DataProvider:
 
     @staticmethod
     def get_mapbox_token() -> str:
+        """
+        For chosen visualization map type, a free token from Mapbox is needed.
+        """
         token = os.environ.get("MAPBOX_TOKEN")
         if not token:
             raise Exception(
@@ -50,6 +59,9 @@ class DataProvider:
 
     @staticmethod
     def get_connection_string(endpoint_info: EndpointInfo) -> str:
+        """
+        This function builds the connection string as per Simba ODBC driver documentation
+        """
         connection_string = "".join(
             [
                 f"DRIVER={endpoint_info.driver_path}",
@@ -63,7 +75,7 @@ class DataProvider:
                 ";SparkServerType=3",
                 ";UID=token",
                 f";PWD={endpoint_info.token}",
-                ";RowsFetchedPerBlock=3000000",
+                ";RowsFetchedPerBlock=100000", # Please note that the default value is 10k, we increase it to 100k for faster fetches
             ]
         )
         return connection_string

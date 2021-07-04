@@ -5,6 +5,9 @@ from streamlit.report_thread import add_report_ctx as _add_report_ctx
 
 
 def write_aligned_header(text: str, alignment: str = "left", level: int = 3):
+    """
+    Writes header with given alignment and level, useful for doing left/right switches
+    """
     st.markdown(
         f"""
             <div style='text-align: {alignment};'> 
@@ -24,6 +27,9 @@ Pickup/dropoff locations are missing in the source data for any day after 2016.0
 
 
 def _spinner_component(text: str) -> str:
+    """
+    Returns HTML code for custom spinner with spinner component from Bootstrap 4
+    """
     component = f"""
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet"/>
         <div class="d-flex flex-column align-items-center justify-content-center">
@@ -42,35 +48,16 @@ def _spinner_component(text: str) -> str:
 
 @_contextlib.contextmanager
 def custom_spinner(text="In progress..."):
-    """Temporarily displays a message while executing a block of code.
-
-    Parameters
-    ----------
-    text : str
-        A message to display while executing that block
-
-    Example
-    -------
-
-    >>> with st.spinner('Wait for it...'):
-    >>>     time.sleep(5)
-    >>> st.success('Done!')
-
+    """
+    This function is a fork of st.spinner
     """
     import streamlit.caching as caching
 
-    # @st.cache optionally uses spinner for long-running computations.
-    # Normally, streamlit warns the user when they call st functions
-    # from within an @st.cache'd function. But we do *not* want to show
-    # these warnings for spinner's message, so we create and mutate this
-    # message delta within the "suppress_cached_st_function_warning"
-    # context.
     with caching.suppress_cached_st_function_warning():
+        # clean up the message content in the beginning
         message = st.empty()
 
     try:
-        # Set the message 0.1 seconds in the future to avoid annoying
-        # flickering if this spinner runs too quickly.
         DELAY_SECS = 0.1
         display_message = True
         display_message_lock = _threading.Lock()
@@ -79,6 +66,7 @@ def custom_spinner(text="In progress..."):
             with display_message_lock:
                 if display_message:
                     with caching.suppress_cached_st_function_warning():
+                        # keep the spinner component on the screen until context is finished
                         message.markdown(
                             _spinner_component(text), unsafe_allow_html=True
                         )
@@ -92,4 +80,5 @@ def custom_spinner(text="In progress..."):
             with display_message_lock:
                 display_message = False
         with caching.suppress_cached_st_function_warning():
+            # clean up the spinner as soon as context is finished.
             message.empty()

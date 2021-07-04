@@ -1,17 +1,20 @@
+"""
+Application entrypoint for streamlit. 
+"""
 import streamlit as st
 import logging
 import datetime as dt
 from databricks_streamlit_demo.data_provider import TaxiDataProvider
 from databricks_streamlit_demo.plotter import Plotter
 from databricks_streamlit_demo.utils import write_aligned_header, empty_date_warning
-import time
+
 
 logger = logging.getLogger("databricks-streamlit-demo")
 data_provider = TaxiDataProvider(logger)
 plotter = Plotter(data_provider)
 
 st.set_page_config(
-    layout="wide", page_title="Databricks Streamlit Demo", page_icon=":fire:"
+    layout="wide", page_title="Databricks Streamlit Demo", page_icon=":fire:" # :fire: will be transformed into emoji 
 )
 
 st.write(
