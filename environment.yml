@@ -6,7 +6,7 @@ dependencies:
   - pyodbc
   - pandas
   - pip:
-    - streamlit
-    - black
-    - plotly-express
-    - plotly
+    - streamlit==0.84.0
+    - black==21.6b0
+    - plotly-express==0.4.1
+    - plotly==5.1.0
