@@ -1,7 +1,7 @@
 import streamlit as st
 import contextlib as _contextlib
 import threading as _threading
-from streamlit.report_thread import add_report_ctx as _add_report_ctx
+from streamlit.runtime.scriptrunner import add_report_ctx as _add_report_ctx
 
 
 def write_aligned_header(text: str, alignment: str = "left", level: int = 3):
