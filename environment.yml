@@ -2,6 +2,8 @@ name: databricks-streamlit-demo
 channels:
   - conda-forge
 dependencies:
+  - python=3.10
+  - pyarrow=9.0.0
   - pip
   - pyodbc
   - pandas
